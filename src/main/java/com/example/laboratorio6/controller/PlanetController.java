@@ -24,35 +24,45 @@ public class PlanetController {
     }
 
     @GetMapping("/nuevo")
-    public String formularioCrear(Model model) {
+    public String nuevo(Model model) {
         model.addAttribute("planeta", new Planet());
         return "planetas/formulario";
     }
 
+    @GetMapping("/editar/{id}")
+    public String editar(@PathVariable Long id, Model model) {
+        Planet planeta = planetService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Planeta no encontrado"));
+        model.addAttribute("planeta", planeta);
+        return "planetas/formulario";
+    }
+
     @PostMapping
-    public String guardar(@Valid @ModelAttribute Planet planeta, BindingResult result, Model model) {
+    public String guardar(@Valid @ModelAttribute("planeta") Planet planeta, BindingResult result, Model model) {
         if (result.hasErrors()) {
+            return "planetas/formulario";
+        }
+        // Validate unique name
+        Planet existingPlanet = planetService.findByNombre(planeta.getNombre());
+        if (existingPlanet != null && !existingPlanet.getId().equals(planeta.getId())) {
+            result.rejectValue("nombre", "error.planeta", "El nombre del planeta ya existe.");
             return "planetas/formulario";
         }
         planetService.save(planeta);
         return "redirect:/planetas";
     }
 
-    @GetMapping("/{id}")
-    public String detalle(@PathVariable Long id, Model model) {
-        model.addAttribute("planeta", planetService.findById(id).orElseThrow(() -> new IllegalArgumentException("Planeta no encontrado")));
-        return "planetas/detalle";
-    }
-
-    @GetMapping("/editar/{id}")
-    public String formularioEditar(@PathVariable Long id, Model model) {
-        model.addAttribute("planeta", planetService.findById(id).orElseThrow(() -> new IllegalArgumentException("Planeta no encontrado")));
-        return "planetas/formulario";
-    }
-
     @GetMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Long id) {
         planetService.deleteById(id);
         return "redirect:/planetas";
+    }
+
+    @GetMapping("/{id}")
+    public String ver(@PathVariable Long id, Model model) {
+        Planet planeta = planetService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Planeta no encontrado"));
+        model.addAttribute("planeta", planeta);
+        return "planetas/detalle";
     }
 }

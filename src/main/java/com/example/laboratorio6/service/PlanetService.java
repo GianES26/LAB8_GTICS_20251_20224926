@@ -23,8 +23,12 @@ public class PlanetService {
         return planetRepository.findById(id);
     }
 
-    public Planet save(Planet planet) {
-        return planetRepository.save(planet);
+    public Planet findByNombre(String nombre) {
+        return planetRepository.findByNombre(nombre);
+    }
+
+    public void save(Planet planet) {
+        planetRepository.save(planet);
     }
 
     public void deleteById(Long id) {
