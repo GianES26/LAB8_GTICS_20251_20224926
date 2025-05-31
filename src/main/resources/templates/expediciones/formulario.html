@@ -41,11 +41,11 @@
       <textarea class="form-control" id="objetivos" th:field="*{objetivos}"></textarea>
     </div>
     <div class="mb-3">
-      <label for="miembrosTripulacion" class="form-label">Miembros de la Tripulación</label>
+      <label class="form-label">Miembros de la Tripulación</label>
       <div th:each="miembro : ${miembrosTripulacion}">
         <div class="form-check">
-          <input type="checkbox" class="form-check-input" th:value="${miembro.id}" name="idsMiembros"/>
-          <label class="form-check-label" th:text="${miembro.nombreCompleto} + ' (' + ${miembro.especialidad} + ')'"></label>
+          <input type="checkbox" class="form-check-input" th:value="${miembro.id}" th:id="'miembro-' + ${miembro.id}" name="idsMiembros" th:checked="${expedicion.expeditionCrew} ? ${expedicion.expeditionCrew.contains(miembro)} : false"/>
+          <label class="form-check-label" th:for="'miembro-' + ${miembro.id}" th:text="${miembro.nombreCompleto} + ' (' + ${miembro.especialidad} + ')'"></label>
         </div>
       </div>
     </div>
