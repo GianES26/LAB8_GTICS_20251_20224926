@@ -23,8 +23,8 @@ public class CrewMemberService {
         return crewMemberRepository.findById(id);
     }
 
-    public CrewMember save(CrewMember crewMember) {
-        return crewMemberRepository.save(crewMember);
+    public void save(CrewMember crewMember) {
+        crewMemberRepository.save(crewMember);
     }
 
     public void deleteById(Long id) {

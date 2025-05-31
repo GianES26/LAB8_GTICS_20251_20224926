@@ -24,35 +24,44 @@ public class CrewMemberController {
     }
 
     @GetMapping("/nuevo")
-    public String formularioCrear(Model model) {
-        model.addAttribute("miembroTripulacion", new CrewMember());
+    public String nuevo(Model model) {
+        model.addAttribute("miembro", new CrewMember());
+        return "tripulacion/formulario";
+    }
+
+    @GetMapping("/editar/{id}")
+    public String editar(@PathVariable Long id, Model model) {
+        CrewMember miembro = crewMemberService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Miembro de tripulación no encontrado"));
+        model.addAttribute("miembro", miembro);
         return "tripulacion/formulario";
     }
 
     @PostMapping
-    public String guardar(@Valid @ModelAttribute("miembroTripulacion") CrewMember miembroTripulacion, BindingResult result, Model model) {
+    public String guardar(@Valid @ModelAttribute("miembro") CrewMember miembro, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "tripulacion/formulario";
         }
-        crewMemberService.save(miembroTripulacion);
+        try {
+            crewMemberService.save(miembro);
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+            return "tripulacion/formulario";
+        }
         return "redirect:/tripulacion";
-    }
-
-    @GetMapping("/{id}")
-    public String detalle(@PathVariable Long id, Model model) {
-        model.addAttribute("miembroTripulacion", crewMemberService.findById(id).orElseThrow(() -> new IllegalArgumentException("Miembro no encontrado")));
-        return "tripulacion/detalle";
-    }
-
-    @GetMapping("/editar/{id}")
-    public String formularioEditar(@PathVariable Long id, Model model) {
-        model.addAttribute("miembroTripulacion", crewMemberService.findById(id).orElseThrow(() -> new IllegalArgumentException("Miembro no encontrado")));
-        return "tripulacion/formulario";
     }
 
     @GetMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Long id) {
         crewMemberService.deleteById(id);
         return "redirect:/tripulacion";
+    }
+
+    @GetMapping("/{id}")
+    public String ver(@PathVariable Long id, Model model) {
+        CrewMember miembro = crewMemberService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Miembro de tripulación no encontrado"));
+        model.addAttribute("miembro", miembro);
+        return "tripulacion/detalle";
     }
 }
