@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Detalles del Miembro de la Tripulación</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+    <h1>Detalles del Miembro de la Tripulación</h1>
+    <p><strong>Nombre:</strong> <span th:text="${miembroTripulacion.nombreCompleto}"></span></p>
+    <p><strong>Especialidad:</strong> <span th:text="${miembroTripulacion.especialidad}"></span></p>
+    <p><strong>Rango:</strong> <span th:text="${miembroTripulacion.rango}"></span></p>
+    <p><strong>Fecha de Contratación:</strong> <span th:text="${miembroTripulacion.fechaContratacion}"></span></p>
+    <a th:href="@{/tripulacion/editar/{id}(id=${miembroTripulacion.id})}" class="btn btn-primary">Editar</a>
+    <a th:href="@{/tripulacion}" class="btn btn-secondary">Volver a la Lista</a>
+</div>
+</body>
+</html>

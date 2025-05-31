@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${miembroTripulacion.id} ? 'Editar Miembro' : 'Nuevo Miembro'"></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+    <h1 th:text="${miembroTripulacion.id} ? 'Editar Miembro' : 'Nuevo Miembro'"></h1>
+    <form th:action="@{/tripulacion}" th:object="${miembroTripulacion}" method="post">
+        <div class="mb-3">
+            <label for="nombreCompleto" class="form-label">Nombre Completo</label>
+            <input type="text" class="form-control" id="nombreCompleto" th:field="*{nombreCompleto}" required/>
+            <div th:errors="*{nombreCompleto}" class="text-danger"></div>
+        </div>
+        <div class="mb-3">
+            <label for="especialidad" class="form-label">Especialidad</label>
+            <select class="form-select" id="especialidad" th:field="*{especialidad}" required>
+                <option value="Piloto">Piloto</option>
+                <option value="Científico">Científico</option>
+                <option value="Ingeniero">Ingeniero</option>
+                <option value="Médico">Médico</option>
+            </select>
+            <div th:errors="*{especialidad}" class="text-danger"></div>
+        </div>
+        <div class="mb-3">
+            <label for="rango" class="form-label">Rango</label>
+            <select class="form-select" id="rango" th:field="*{rango}">
+                <option value="">Ninguno</option>
+                <option value="Capitán">Capitán</option>
+                <option value="Oficial">Oficial</option>
+                <option value="Cadete">Cadete</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="fechaContratacion" class="form-label">Fecha de Contratación</label>
+            <input type="date" class="form-control" id="fechaContratacion" th:field="*{fechaContratacion}" required/>
+            <div th:errors="*{fechaContratacion}" class="text-danger"></div>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a th:href="@{/tripulacion}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+</body>
+</html>

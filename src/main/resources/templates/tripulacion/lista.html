@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Miembros de la Tripulación</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+    <h1>Miembros de la Tripulación</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Especialidad</th>
+            <th>Rango</th>
+            <th>Fecha de Contratación</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="miembro : ${miembrosTripulacion}">
+            <td th:text="${miembro.nombreCompleto}"></td>
+            <td th:text="${miembro.especialidad}"></td>
+            <td th:text="${miembro.rango}"></td>
+            <td th:text="${miembro.fechaContratacion}"></td>
+            <td>
+                <a th:href="@{/tripulacion/{id}(id=${miembro.id})}" class="btn btn-info btn-sm">Ver</a>
+                <a th:href="@{/tripulacion/editar/{id}(id=${miembro.id})}" class="btn btn-primary btn-sm">Editar</a>
+                <a th:href="@{/tripulacion/eliminar/{id}(id=${miembro.id})}" class="btn btn-danger btn-sm">Eliminar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/tripulacion/nuevo}" class="btn btn-success">Agregar Miembro</a>
+    <a th:href="@{/" class="btn btn-secondary">Volver al Panel</a>
+</div>
+</body>
+</html>

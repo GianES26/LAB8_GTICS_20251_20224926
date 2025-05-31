@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Detalles de la Expedición</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+    <h1>Detalles de la Expedición</h1>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+    <p><strong>Nombre de la Misión:</strong> <span th:text="${expedicion.nombreMision}"></span></p>
+    <p><strong>Planeta Destino:</strong> <span th:text="${expedicion.planetaDestino.nombre}"></span></p>
+    <p><strong>Fecha de Lanzamiento:</strong> <span th:text="${expedicion.fechaLanzamiento}"></span></p>
+    <p><strong>Estado:</strong> <span th:text="${expedicion.estado}"></span></p>
+    <p><strong>Objetivos:</strong> <span th:text="${expedicion.objetivos}"></span></p>
+    <p><strong>Resultados:</strong> <span th:text="${expedicion.resultados}"></span></p>
+    <h3>Miembros de la Tripulación</h3>
+    <ul>
+        <li th:each="ec : ${expedicion.expeditionCrew}" th:text="${ec.crewMember.nombreCompleto} + ' (' + ${ec.crewMember.especialidad} + ')'"></li>
+    </ul>
+    <form th:action="@{/expediciones/actualizar-estado/{id}(id=${expedicion.id})}" method="post">
+        <div class="mb-3">
+            <label for="estado" class="form-label">Actualizar Estado</label>
+            <select class="form-select" id="estado" name="estado">
+                <option value="Planificada">Planificada</option>
+                <option value="En Curso">En Curso</option>
+                <option value="Completada">Completada</option>
+                <option value="Cancelada">Cancelada</option>
+            </select>
+        </div>
+        <div class="mb-3" th:if="${expedicion.estado == 'Completada'}">
+            <label for="resultados" class="form-label">Resultados</label>
+            <textarea class="form-control" id="resultados" name="resultados" th:text="${expedicion.resultados}"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Actualizar Estado</button>
+    </form>
+    <a th:href="@{/expediciones/editar/{id}(id=${expedicion.id})}" class="btn btn-primary">Editar</a>
+    <a th:href="@{/expediciones}" class="btn btn-secondary">Volver a la Lista</a>
+</div>
+</body>
+</html>
