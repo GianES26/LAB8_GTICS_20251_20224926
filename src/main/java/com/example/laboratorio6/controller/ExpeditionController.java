@@ -32,22 +32,33 @@ public class ExpeditionController {
     }
 
     @GetMapping("/nuevo")
-    public String formularioCrear(Model model) {
+    public String nuevo(Model model) {
         model.addAttribute("expedicion", new Expedition());
         model.addAttribute("planetas", planetService.findAll());
         model.addAttribute("miembrosTripulacion", crewMemberService.findAll());
         return "expediciones/formulario";
     }
 
+    @GetMapping("/editar/{id}")
+    public String editar(@PathVariable Long id, Model model) {
+        Expedition expedicion = expeditionService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Expedición no encontrada"));
+        model.addAttribute("expedicion", expedicion);
+        model.addAttribute("planetas", planetService.findAll());
+        model.addAttribute("miembrosTripulacion", crewMemberService.findAll());
+        return "expediciones/formulario";
+    }
+
     @PostMapping
-    public String guardar(@Valid @ModelAttribute Expedition expedicion, @RequestParam(value = "idsMiembros", required = false) List<Long> idsMiembros, BindingResult result, Model model) {
+    public String guardar(@Valid @ModelAttribute("expedicion") Expedition expedicion, BindingResult result,
+                          @RequestParam(value = "idsMiembros", required = false) List<Long> crewMemberIds, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("planetas", planetService.findAll());
             model.addAttribute("miembrosTripulacion", crewMemberService.findAll());
             return "expediciones/formulario";
         }
         try {
-            expeditionService.save(expedicion, idsMiembros);
+            expeditionService.save(expedicion, crewMemberIds);
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
             model.addAttribute("planetas", planetService.findAll());
@@ -55,20 +66,6 @@ public class ExpeditionController {
             return "expediciones/formulario";
         }
         return "redirect:/expediciones";
-    }
-
-    @GetMapping("/{id}")
-    public String detalle(@PathVariable Long id, Model model) {
-        model.addAttribute("expedicion", expeditionService.findById(id).orElseThrow(() -> new IllegalArgumentException("Expedición no encontrada")));
-        return "expediciones/detalle";
-    }
-
-    @GetMapping("/editar/{id}")
-    public String formularioEditar(@PathVariable Long id, Model model) {
-        model.addAttribute("expedicion", expeditionService.findById(id).orElseThrow(() -> new IllegalArgumentException("Expedición no encontrada")));
-        model.addAttribute("planetas", planetService.findAll());
-        model.addAttribute("miembrosTripulacion", crewMemberService.findAll());
-        return "expediciones/formulario";
     }
 
     @GetMapping("/eliminar/{id}")
@@ -77,15 +74,11 @@ public class ExpeditionController {
         return "redirect:/expediciones";
     }
 
-    @PostMapping("/actualizar-estado/{id}")
-    public String actualizarEstado(@PathVariable Long id, @RequestParam String estado, @RequestParam(required = false) String resultados, Model model) {
-        try {
-            expeditionService.updateStatus(id, estado, resultados);
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("error", e.getMessage());
-            model.addAttribute("expedicion", expeditionService.findById(id).orElseThrow(() -> new IllegalArgumentException("Expedición no encontrada")));
-            return "expediciones/detalle";
-        }
-        return "redirect:/expediciones";
+    @GetMapping("/{id}")
+    public String ver(@PathVariable Long id, Model model) {
+        Expedition expedicion = expeditionService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Expedición no encontrada"));
+        model.addAttribute("expedicion", expedicion);
+        return "expediciones/detalle";
     }
 }
