@@ -29,9 +29,12 @@
                 <a th:href="@{/tripulacion/eliminar/{id}(id=${miembro.id})}" class="btn btn-danger btn-sm">Eliminar</a>
             </td>
         </tr>
+        <tr th:if="${miembrosTripulacion.isEmpty()}">
+            <td colspan="5" class="text-center">No hay miembros de tripulación disponibles.</td>
+        </tr>
         </tbody>
     </table>
-    <a th:href="@{/tripulacion/nuevo}" class="btn btn-success">Agregar Miembro</a>
+    <a th:href="@{/tripulacion/nuevo}" class="btn btn-success">Agregar Miembro de Tripulación</a>
     <a th:href="@{/}" class="btn btn-secondary">Volver al Panel</a>
 </div>
 </body>

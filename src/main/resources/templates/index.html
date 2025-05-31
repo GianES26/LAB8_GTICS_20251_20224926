@@ -31,6 +31,9 @@
                 <a th:href="@{/expediciones/eliminar/{id}(id=${expedicion.id})}" class="btn btn-danger btn-sm">Eliminar</a>
             </td>
         </tr>
+        <tr th:if="${expediciones.isEmpty()}">
+            <td colspan="5" class="text-center">No hay expediciones disponibles.</td>
+        </tr>
         </tbody>
     </table>
     <a th:href="@{/expediciones/nuevo}" class="btn btn-success">Crear Nueva Expedición</a>
@@ -56,11 +59,41 @@
                 <a th:href="@{/planetas/eliminar/{id}(id=${planeta.id})}" class="btn btn-danger btn-sm">Eliminar</a>
             </td>
         </tr>
+        <tr th:if="${planetas.isEmpty()}">
+            <td colspan="4" class="text-center">No hay planetas disponibles.</td>
+        </tr>
         </tbody>
     </table>
     <a th:href="@{/planetas/nuevo}" class="btn btn-success">Agregar Planeta</a>
 
-    <a th:href="@{/tripulacion}" class="btn btn-primary">Ver Miembros de Tripulación</a>
+    <h2>Miembros de la Tripulación</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Especialidad</th>
+            <th>Rango</th>
+            <th>Fecha de Contratación</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="miembro : ${miembrosTripulacion}">
+            <td th:text="${miembro.nombreCompleto}"></td>
+            <td th:text="${miembro.especialidad}"></td>
+            <td th:text="${miembro.rango}"></td>
+            <td th:text="${miembro.fechaContratacion}"></td>
+            <td>
+                <a th:href="@{/tripulacion/{id}(id=${miembro.id})}" class="btn btn-info btn-sm">Ver</a>
+                <a th:href="@{/tripulacion/editar/{id}(id=${miembro.id})}" class="btn btn-primary btn-sm">Editar</a>
+                <a th:href="@{/tripulacion/eliminar/{id}(id=${miembro.id})}" class="btn btn-danger btn-sm">Eliminar</a>
+            </td>
+        </tr>
+        <tr th:if="${miembrosTripulacion.isEmpty()}">
+            <td colspan="5" class="text-center">No hay miembros de tripulación disponibles.</td>
+        </tr>
+        </tbody>
+    </table>
     <a th:href="@{/tripulacion/nuevo}" class="btn btn-success">Agregar Miembro de Tripulación</a>
 </div>
 </body>

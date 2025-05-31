@@ -13,7 +13,6 @@
       <th>Nombre</th>
       <th>Tipo</th>
       <th>Habitable</th>
-      <th>Gravedad</th>
       <th>Acciones</th>
     </tr>
     </thead>
@@ -22,12 +21,14 @@
       <td th:text="${planeta.nombre}"></td>
       <td th:text="${planeta.tipoPlaneta}"></td>
       <td th:text="${planeta.habitable}"></td>
-      <td th:text="${planeta.gravedadRelativa}"></td>
       <td>
         <a th:href="@{/planetas/{id}(id=${planeta.id})}" class="btn btn-info btn-sm">Ver</a>
         <a th:href="@{/planetas/editar/{id}(id=${planeta.id})}" class="btn btn-primary btn-sm">Editar</a>
         <a th:href="@{/planetas/eliminar/{id}(id=${planeta.id})}" class="btn btn-danger btn-sm">Eliminar</a>
       </td>
+    </tr>
+    <tr th:if="${planetas.isEmpty()}">
+      <td colspan="4" class="text-center">No hay planetas disponibles.</td>
     </tr>
     </tbody>
   </table>

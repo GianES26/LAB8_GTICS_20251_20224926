@@ -29,6 +29,9 @@
                 <a th:href="@{/expediciones/eliminar/{id}(id=${expedicion.id})}" class="btn btn-danger btn-sm">Eliminar</a>
             </td>
         </tr>
+        <tr th:if="${expediciones.isEmpty()}">
+            <td colspan="5" class="text-center">No hay expediciones disponibles.</td>
+        </tr>
         </tbody>
     </table>
     <a th:href="@{/expediciones/nuevo}" class="btn btn-success">Crear Nueva Expedición</a>
